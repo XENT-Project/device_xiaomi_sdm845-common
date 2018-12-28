@@ -61,10 +61,34 @@ public class DiracSettingsFragment extends PreferenceFragment implements
         mHeadsetType = (ListPreference) findPreference(PREF_HEADSET);
         mHeadsetType.setOnPreferenceChangeListener(this);
         mHeadsetType.setEnabled(enhancerEnabled);
+        // TODO: adapt to real values
+        String[] headsetEntries = new String[] {
+            getString(R.string.dirac_headset_0),
+            getString(R.string.dirac_headset_1),
+            getString(R.string.dirac_headset_2),
+            getString(R.string.dirac_headset_3)
+        };
+        String[] headsetValues = new String[] {
+            "0", "1", "2", "3"
+        };
+        mHeadsetType.setEntries(headsetEntries);
+        mHeadsetType.setEntryValues(headsetValues);
 
         mPreset = (ListPreference) findPreference(PREF_PRESET);
         mPreset.setOnPreferenceChangeListener(this);
         mPreset.setEnabled(enhancerEnabled);
+        // TODO: adapt to real values
+        String[] presetEntries = new String[] {
+            getString(R.string.dirac_preset_0),
+            getString(R.string.dirac_preset_1),
+            getString(R.string.dirac_preset_2),
+            getString(R.string.dirac_preset_3)
+        };
+        String[] presetValues = new String[] {
+            "0", "1", "2", "3"
+        };
+        mPreset.setEntries(presetEntries);
+        mPreset.setEntryValues(presetValues);
     }
 
     @Override
