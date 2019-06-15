@@ -45,6 +45,9 @@ ifeq ($(TARGET_PREBUILT_KERNEL),)
   TARGET_KERNEL_SOURCE := kernel/xiaomi/perseus
 endif
 
+# Use Snapdragon LLVM, if available
+TARGET_USE_SDCLANG := true
+
 # Platform
 TARGET_BOARD_PLATFORM := sdm845
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno630
