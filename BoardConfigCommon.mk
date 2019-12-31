@@ -27,6 +27,8 @@ TARGET_2ND_CPU_VARIANT_RUNTIME := kryo385
 
 TARGET_USES_64_BIT_BINDER := true
 
+BUILD_BROKEN_DUP_RULES := true
+
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := sdm845
 TARGET_NO_BOOTLOADER := true
@@ -41,8 +43,6 @@ BOARD_RAMDISK_OFFSET := 0x01000000
 TARGET_KERNEL_ARCH := arm64
 ifeq ($(TARGET_PREBUILT_KERNEL),)
   TARGET_KERNEL_CLANG_COMPILE := true
-  TARGET_KERNEL_CLANG_VERSION := 6032204
-  TARGET_KERNEL_SOURCE := kernel/xiaomi/sdm845
 endif
 
 # Use Snapdragon LLVM, if available
@@ -71,7 +71,6 @@ TARGET_USE_QTI_BT_STACK := true
 
 # Camera
 TARGET_USES_QTI_CAMERA_DEVICE := true
-TARGET_USES_QTI_CAMERA2CLIENT := true
 
 # Charger Mode
 BOARD_CHARGER_ENABLE_SUSPEND := true
@@ -82,6 +81,7 @@ ifeq ($(HOST_OS),linux)
     WITH_DEXPREOPT ?= true
   endif
 endif
+WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY ?= true
 
 # DRM
 TARGET_ENABLE_MEDIADRM_64 := true
@@ -115,6 +115,7 @@ BOARD_VENDORIMAGE_PARTITION_SIZE := 1073741824
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
+
 BOARD_ROOT_EXTRA_SYMLINKS := \
     /mnt/vendor/persist:/persist \
     /vendor/bt_firmware:/bt_firmware \
@@ -149,9 +150,6 @@ TARGET_USES_PRE_UPLINK_FEATURES_NETMGRD := true
 
 # Security patch level
 VENDOR_SECURITY_PATCH := 2018-06-05
-
-# Compile libhwui in performance mode
-HWUI_COMPILE_FOR_PERF := true
 
 # Sepolicy
 include device/qcom/sepolicy/sepolicy.mk
