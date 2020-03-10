@@ -282,7 +282,11 @@ on boot
 
     chown system system /sys/class/thermal/thermal_message/sconfig
     chown root system /sys/bus/i2c/devices/3-0050/pressure
-
+    
+    # Sensors log dir
+    mkdir /data/vendor/sensors
+    chown system system /data/vendor/sensors
+    
 # MSM specific files that need to be created on /data
 on post-fs-data
     mkdir /data/tombstones 0771 system system
@@ -328,8 +332,9 @@ on post-fs-data
     # Create folder of camera
     mkdir /data/vendor/camera 0770 camera camera
 
-    # Change ownership to system
-    chown system system /data/vendor/tombstones
+    # Create directory for tftp
+    mkdir /data/vendor/tombstones 0771 system system
+    mkdir /data/vendor/tombstones/rfs 0771 system system
 
     mkdir /data/vendor/ramdump 0771 root system
     mkdir /data/vendor/bluetooth 0770 bluetooth bluetooth
@@ -369,6 +374,7 @@ on post-fs-data
 
     # Create directory for radio
     mkdir /data/vendor/radio 0770 system radio
+    rm /data/vendor/radio/shmbus
 
     # Create directory for modem_config
     mkdir /data/vendor/modem_config 0570 radio root
@@ -678,6 +684,7 @@ service qcom-post-boot /vendor/bin/init.qcom.post_boot.sh
     group root system wakelock graphics
     disabled
     oneshot
+    disabled
 
 on property:ro.vendor.ril.mbn_copy_completed=1
     write /data/vendor/radio/copy_complete 1
@@ -762,6 +769,7 @@ service vendor.contexthub-hal-1-0 /vendor/bin/hw/android.hardware.contexthub@1.0
 
 on property:vold.decrypt=trigger_restart_framework
     restart vendor.audio-hal-2-0
+    start vendor-sensor-sh
 
 on boot && property:persist.vendor.usb.controller.default=*
     setprop vendor.usb.controller ${persist.vendor.usb.controller.default}
