@@ -371,6 +371,13 @@
         <item>"/system/lib64/libsurfaceflinger.so"</item>
     </string-array>
 
+     <!-- Vibrator pattern for feedback about touching a virtual key -->
+    <integer-array name="config_virtualKeyVibePattern">
+        <item>3</item>
+        <item>8</item>
+        <item>13</item>
+    </integer-array>
+    
     <!-- Boolean indicating whether the HWC setColorTransform function can be performed efficiently
          in hardware. -->
     <bool name="config_setColorTransformAccelerated">true</bool>
