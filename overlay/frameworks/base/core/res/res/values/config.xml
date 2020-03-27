@@ -58,15 +58,6 @@
         <item>"wigig0"</item>
         <item>"wifi_br0"</item>
     </string-array>
-    
-    <!-- dual sap mode is supported on this device. -->
-    <bool name="config_wifi_dual_sap_mode_enabled">true</bool>
-
-    <!-- list of interface names for SoftAp in Dual mode. -->
-    <string-array translatable="false" name="config_wifi_dual_sap_interfaces">
-        <item>"softap1"</item>
-        <item>"softap2"</item>
-    </string-array>
 
     <!-- List of regexpressions describing the interface (if any) that represent tetherable
          bluetooth interfaces.  If the device doesn't want to support tethering over bluetooth this
@@ -178,6 +169,9 @@
     <!-- Wifi driver supports batched scan -->
     <bool translatable="false" name="config_wifi_batched_scan_supported">true</bool>
 
+    <!-- Indicates that connected MAC randomization is supported on this device -->
+    <bool translatable="false" name="config_wifi_connected_mac_randomization_supported">true</bool>
+
     <!-- Configure wifi tcp buffersizes in the form:
          rmem_min,rmem_def,rmem_max,wmem_min,wmem_def,wmem_max -->
     <string name="config_wifi_tcp_buffers" translatable="false">524288,1048576,5505024,262144,524288,5505024</string>
@@ -222,8 +216,11 @@
          This resource should be set to "true" when a doze component has been specified
          to maximize power savings but not all devices support it.
 
-         Refer to autosuspend.h for details.
-    -->
+         Refer to autosuspend.h for details. -->
+
+    <!-- Whether the device has fingeprint sensor or not -->
+    <bool name="config_hasFingerprintSensor">true</bool>
+
     <bool name="config_powerDecoupleAutoSuspendModeFromDisplay">true</bool>
 
     <!-- Power Management: Specifies whether to decouple the interactive state of the
@@ -249,11 +246,6 @@
          May be less than the minimum allowed brightness setting
          that can be set by the user. -->
     <integer name="config_screenBrightnessDoze">17</integer>
-
-    <!-- Enables or disables haptic effect when the text insertion/selection handle is moved
-         manually by the user. Off by default, since the expected haptic feedback may not be
-         available on some devices. -->
-    <bool name="config_enableHapticTextHandle">true</bool>
 
     <!-- Configure mobile tcp buffer sizes in the form:
          rat-name:rmem_min,rmem_def,rmem_max,wmem_min,wmem_def,wmem_max
@@ -281,7 +273,6 @@
          provisioning, availability etc -->
     <bool name="config_carrier_volte_available">true</bool>
     <bool name="config_device_vt_available">true</bool>
-    <bool name="config_carrier_vt_available">true</bool>
 
     <!-- Flag specifying whether WFC over IMS is available on device -->
     <bool name="config_device_wfc_ims_available">true</bool>
@@ -354,6 +345,13 @@
         <item>/system/lib64/libblas.so</item>
     </string-array>
 
+    <!-- Vibrator pattern for feedback about touching a virtual key -->
+    <integer-array name="config_virtualKeyVibePattern">
+        <item>3</item>
+        <item>8</item>
+        <item>13</item>
+    </integer-array>
+
     <!-- Should the pinner service pin the Camera application? -->
     <bool name="config_pinnerCameraApp">true</bool>
 
@@ -383,44 +381,20 @@
     <!-- Whether device supports double tap to wake -->
     <bool name="config_supportDoubleTapWake">true</bool>
 
-    <!-- True if the firmware supports connected MAC randomization -->
-    <bool name="config_wifi_connected_mac_randomization_supported">true</bool>
-
-    <!-- Enable dual LTE capability support-->
-    <bool name="config_dual_LTE_capability">true</bool>
-
-    <!-- Whether device ignores the RSSNR signal implementation -->
-    <bool name="config_ignoreRssnrSignalLevel">true</bool>
-
-    <!-- Do the battery/notification LEDs support pulsing?
+   <!-- Do the battery/notification LEDs support pulsing?
          Used to decide if we show pulse settings -->
-    <bool name="config_ledCanPulse">true</bool>
+   <bool name="config_ledCanPulse">true</bool>
 
-    <!-- Whether we have a multi coloured battery LED or not -->
+   <!-- Is the battery LED intrusive? Used to decide if there should be a disable option -->
+   <bool name="config_intrusiveBatteryLed">true</bool>
+
+   <!-- Does the battery LED support multiple colors?
+         Used to decide if the user can change the colors -->
     <bool name="config_multiColorBatteryLed">false</bool>
 
-    <!-- Whether or not swipe up gesture's opt-in setting is available on this device -->
-    <bool name="config_swipe_up_gesture_setting_available">true</bool>
+    <!-- Default value for LED on time when the battery is low on charge in miliseconds -->
+    <integer name="config_notificationsBatteryLedOn">250</integer>
 
-    <!-- Whether or not smart battery is available on this device -->
-    <bool name="config_smart_battery_available">true</bool>
-	
-    <!-- Whether to allow sending active app broadcast -->
-    <bool name="config_allowActivePackageBroadcast">true</bool>
-	
-    <!-- Whether device has screen with higher aspect ratio -->
-    <bool name="config_haveHigherAspectRatioScreen">true</bool>
-
-    <!-- Older rotation sensors are not setting event.timestamp correctly. Setting to
-         true will use SystemClock.elapsedRealtimeNanos() to set timestamp. -->
-    <bool name="config_useSystemClockforRotationSensor">true</bool>
-	
-    <!-- Burn in protection -->
-    <bool name="config_statusBarBurnInProtection">true</bool>
-
-    <!-- Whether to use old mobile type icons as default -->
-    <bool name="config_useOldMobileIcons">true</bool>
-
-    <!-- True if the firmware supports Wi-Fi link probing -->
-    <bool name="config_wifi_link_probing_supported">true</bool>
+    <!-- Default value for LED off time when the battery is low on charge in miliseconds -->
+    <integer name="config_notificationsBatteryLedOff">509</integer>
 </resources>
