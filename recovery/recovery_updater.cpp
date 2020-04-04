@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016, The CyanogenMod Project
- * Copyright (C) 2017-2018, The LineageOS Project
+ * Copyright (C) 2017-2020, The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <time.h>
 #include <unistd.h>
 
 #include <string>
@@ -37,10 +36,10 @@
 
 #define ALPHABET_LEN 256
 
-#define BASEBAND_PART_PATH "/dev/block/bootdevice/by-name/modem"
-#define BASEBAND_VER_STR_START "QC_IMAGE_VERSION_STRING=MPSS.AT."
-#define BASEBAND_VER_STR_START_LEN 32
-#define BASEBAND_VER_BUF_LEN 255
+#define XBL_PART_PATH "/dev/block/bootdevice/by-name/xbl_a"
+#define TZ_VER_STR "QC_IMAGE_VERSION_STRING=TZ."
+#define TZ_VER_STR_LEN 27
+#define TZ_VER_BUF_LEN 255
 
 /* Boyer-Moore string search implementation from Wikipedia */
 
@@ -160,16 +159,17 @@ err_ret:
     return ret;
 }
 
-/* verify_baseband("BASEBAND_VERSION", "BASEBAND_VERSION", ...) */
-Value * VerifyBasebandFn(const char *name, State *state,
+/* verify_trustzone("TZ_VERSION", "TZ_VERSION", ...) */
+Value* VerifyTrustZoneFn(const char* name, State* state,
                      const std::vector<std::unique_ptr<Expr>>& argv) {
-    char current_baseband_version[BASEBAND_VER_BUF_LEN];
+    char current_tz_version[TZ_VER_BUF_LEN];
     int ret;
 
-    ret = get_baseband_version(current_baseband_version, BASEBAND_VER_BUF_LEN);
+    ret = get_info(current_tz_version, TZ_VER_BUF_LEN, TZ_VER_STR, TZ_VER_STR_LEN,
+                   XBL_PART_PATH);
     if (ret) {
-        return ErrorAbort(state, kFreadFailure, "%s() failed to read current baseband version: %d",
-                name, ret);
+        return ErrorAbort(state, kFreadFailure,
+                          "%s() failed to read current TZ version: %d", name, ret);
     }
 
     std::vector<std::string> args;
@@ -178,9 +178,8 @@ Value * VerifyBasebandFn(const char *name, State *state,
     }
 
     ret = 0;
-    for (auto &baseband_version : args) {
-        if (strncmp(baseband_version.c_str(), current_baseband_version,
-                baseband_version.length()) <= 0) {
+    for (auto &tz_version : args) {
+        if (strncmp(tz_version.c_str(), current_tz_version, tz_version.length()) <= 0) {
             ret = 1;
             break;
         }
@@ -190,5 +189,5 @@ Value * VerifyBasebandFn(const char *name, State *state,
 }
 
 void Register_librecovery_updater_xiaomi() {
-    RegisterFunction("xiaomi.verify_baseband", VerifyBasebandFn);
+    RegisterFunction("xiaomi.verify_trustzone", VerifyTrustZoneFn);
 }
